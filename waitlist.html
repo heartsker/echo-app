@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Echo — лист ожидания</title>
+
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@600;800&display=swap" rel="stylesheet"/>
+
+    <style>
+      :root {
+        --bg1:#0ea5e9;        /* верх градиента */
+        --bg2:#6366f1;        /* низ градиента */
+        --bg2-solid:#4f46e5;  /* запасной низ (чуть темнее для приятного перехода) */
+        --txt:#0b1220; --muted:#5b6475;
+        --card:rgba(255,255,255,0.92); --border:#e5e7eb;
+        --maxw: 640px;
+        --pad: 28px;
+        --wf-desktop: 840px;
+        --wf-mobile: 640px;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body { height: 100%; }
+
+      /* 1) Фон:
+            - html получает запасной сплошной цвет для overscroll-а;
+            - через ::before кладём фиксированный градиент на весь вьюпорт.
+         Это исключает «полосу» и расхождение оттенков снизу. */
+      html { background-color: var(--bg2-solid); }
+      html::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 68%, var(--bg2-solid) 100%);
+        /* без repeat и с фиксированием, чтобы не было дёрганий на мобильном скролле */
+        background-repeat: no-repeat;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        color: var(--txt);
+      }
+
+      /* Потоковая раскладка, никакой 100vh-акробатики */
+      .page {
+        max-width: var(--maxw);
+        margin: 32px auto;
+        padding: 0 16px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        padding: var(--pad);
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .back {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .back:hover { text-decoration: underline; }
+
+      h1 {
+        margin: 0;
+        font-family: Manrope, Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        font-size: clamp(22px, 4vw, 30px);
+        text-align: center;
+        flex: 1;
+      }
+
+      .lead {
+        margin: 6px 0 20px;
+        color: var(--muted);
+        text-align: center;
+        font-size: 15px;
+      }
+
+      /* Контейнер и iframe виджета без ограничений по высоте/overflow */
+      .waitlist-box { width: 100%; }
+      .waitlister-form { width: 100%; }
+      .waitlister-form iframe {
+        width: 100% !important;
+        height: var(--wf-desktop) !important;
+        max-height: none !important;
+        border: 0 !important;
+        display: block !important;
+        background: transparent !important;
+      }
+
+      @media (max-width: 480px) {
+        .waitlister-form iframe { height: var(--wf-mobile) !important; }
+      }
+
+      footer {
+        text-align: center;
+        font-size: 12px;
+        color: #374151;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <main class="card" role="main">
+        <div class="top">
+          <a class="back" href="./">← Назад</a>
+          <h1>Echo — лист ожидания</h1>
+          <span style="width:64px;opacity:0"></span>
+        </div>
+
+        <p class="lead">Подпишись и получи доступ одним из первых.</p>
+
+        <div class="waitlist-box">
+          <div class="waitlister-form"
+               data-waitlist-key="3YTiB9H5tk69"
+               data-height="840px"></div>
+        </div>
+
+        <footer>© <span id="y"></span> Echo</footer>
+      </main>
+    </div>
+
+    <script src="https://waitlister.me/js/embed.js" defer></script>
+    <script>
+      document.getElementById('y').textContent = new Date().getFullYear();
+
+      // Жёсткая страховка на случай, если их скрипт перезатирает стили iframe
+      (function enforceIframeHeight() {
+        const root = getComputedStyle(document.documentElement);
+        const DESKTOP = root.getPropertyValue('--wf-desktop').trim() || '840px';
+        const MOBILE  = root.getPropertyValue('--wf-mobile').trim()  || '640px';
+
+        const box = document.querySelector('.waitlister-form');
+        function targetHeight(){ return matchMedia('(max-width: 480px)').matches ? MOBILE : DESKTOP; }
+        function apply(ifr){
+          if (!ifr) return;
+          ifr.style.width = '100%';
+          ifr.style.height = targetHeight();
+          ifr.style.maxHeight = 'none';
+          ifr.style.border = '0';
+          ifr.style.display = 'block';
+          ifr.style.background = 'transparent';
+        }
+
+        const tick = setInterval(() => {
+          const ifr = box && box.querySelector('iframe');
+          if (ifr) { apply(ifr); clearInterval(tick); }
+        }, 150);
+
+        const mo = new MutationObserver(()=>apply(box && box.querySelector('iframe')));
+        if (box) mo.observe(box, { childList:true, subtree:true });
+
+        addEventListener('resize', ()=>apply(box && box.querySelector('iframe')));
+      })();
+    </script>
+  </body>
+</html>

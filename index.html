@@ -1,95 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UZD - Actually use the stuff you save</title>
-    <meta name="description" content="Save anything from TikTok and Instagram. UZD organizes, enriches, and makes your saved content searchable with AI. Stop hoarding, start doing." />
-    <meta name="author" content="UZD" />
-    <meta name="keywords" content="save content, TikTok, Instagram, AI organization, content management, productivity app" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="UZD - Actually use the stuff you save" />
-    <meta property="og:description" content="Save anything from TikTok and Instagram. UZD organizes, enriches, and makes your saved content searchable with AI." />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Echo — твой внутренний голос</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@600;800&display=swap" rel="stylesheet"/>
     <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-        background: #f9fafb;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
+      :root { --bg1:#0ea5e9; --bg2:#6366f1; --txt:#0b1220; --muted:#5b6475; --card:#ffffffeb; --border:#e5e7eb; --btn:#111827; --btn-txt:#fff; --btn-hover:#0b0f1a; }
+      *{box-sizing:border-box}
+      html,body{height:100%}
+      body{
+        margin:0;
+        font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+        background:linear-gradient(135deg,var(--bg1),var(--bg2));
+        color:var(--txt);
       }
-      .container {
-        max-width: 500px;
-        width: 100%;
-        padding: 24px;
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-        text-align: center;
+      .wrap{min-height:100dvh; display:grid; place-items:center; padding:32px 20px}
+      .hero{
+        width:100%; max-width:1040px;
+        display:grid; gap:28px; grid-template-columns:1.1fr .9fr;
+        background:#fff; border:1px solid var(--border); border-radius:28px; padding:28px;
       }
-      h1 {
-        font-size: 1.6rem;
-        margin-bottom: 0.5rem;
-        color: #111827;
+      @media (max-width:920px){.hero{grid-template-columns:1fr}}
+      h1{font-family:Manrope,Inter,sans-serif; font-size:clamp(28px,4.4vw,46px); margin:0 0 10px}
+      .lead{font-size:18px; color:var(--muted); margin:0 0 20px}
+      .btn{
+        background:var(--btn); color:var(--btn-txt);
+        padding:14px 20px; font-weight:700; border-radius:14px; text-decoration:none; display:inline-block
       }
-      p {
-        color: #374151;
-        margin-bottom: 1.5rem;
+      .btn:hover{background:var(--btn-hover)}
+      /* Картинка не обрезается: ширина 100%, высота авто */
+      .shot{width:100%}
+      .shot img{
+        width:100%; height:auto; display:block;
+        border:1px solid var(--border); border-radius:20px; background:#fff;
       }
-      .btn {
-        display: inline-block;
-        background: #2563eb;
-        color: white;
-        font-weight: 600;
-        padding: 12px 24px;
-        border-radius: 8px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background 0.2s ease;
-      }
-      .btn:hover {
-        background: #1e40af;
-      }
-      .waitlist-wrapper {
-        display: none;
-        margin-top: 1.5rem;
-      }
+      footer{text-align:center; color:#fff; margin-top:20px; font-size:12px}
     </style>
   </head>
-
   <body>
-    <div class="container">
-      <h1>Join the UZD Waitlist</h1>
-      <p>Be the first to try it when we launch.</p>
-      <button class="btn" id="showWaitlist">Join now</button>
-      <div class="waitlist-wrapper" id="waitlistWrapper">
-        <div class="waitlister-form" 
-             data-waitlist-key="3YTiB9H5tk69" 
-             data-height="453px"></div>
-      </div>
+    <div class="wrap">
+      <main class="hero">
+        <section>
+          <h1>Echo помогает слышать себя</h1>
+          <p class="lead">Личный «внутренний голос», который отражает твой прогресс, мотивирует и мягко подталкивает к нужным шагам.</p>
+          <a class="btn" href="./waitlist.html">Присоединиться к ожиданию</a>
+        </section>
+        <aside class="shot">
+          <!-- logo.png лежит рядом -->
+          <img src="./logo.png" alt="Echo логотип">
+        </aside>
+      </main>
+      <footer>© <span id="y"></span> Echo</footer>
     </div>
-
-    <script src="https://waitlister.me/js/embed.js" defer></script>
-    <script>
-      const btn = document.getElementById("showWaitlist");
-      const wrapper = document.getElementById("waitlistWrapper");
-
-      btn.addEventListener("click", () => {
-        wrapper.style.display = "block";
-        btn.style.display = "none";
-      });
-    </script>
+    <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
   </body>
 </html>
