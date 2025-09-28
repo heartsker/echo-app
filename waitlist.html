@@ -12,34 +12,24 @@
 
     <style>
       :root {
-        --bg1:#0ea5e9;        /* верх градиента */
-        --bg2:#6366f1;        /* низ градиента */
-        --bg2-solid:#4f46e5;  /* запасной низ (чуть темнее для приятного перехода) */
+        --bg1:#0ea5e9; --bg2:#6366f1; --bg2-solid:#4f46e5;
         --txt:#0b1220; --muted:#5b6475;
         --card:rgba(255,255,255,0.92); --border:#e5e7eb;
-        --maxw: 640px;
-        --pad: 28px;
-        --wf-desktop: 840px;
-        --wf-mobile: 640px;
+        --maxw: 640px; --pad: 28px;
+
+        /* Высоты iframe: щедрые, чтобы не резать форму */
+        --wf-desktop: 900px;
+        --wf-mobile: 1200px; /* портретный телефон */
       }
 
       * { box-sizing: border-box; }
-
       html, body { height: 100%; }
 
-      /* 1) Фон:
-            - html получает запасной сплошной цвет для overscroll-а;
-            - через ::before кладём фиксированный градиент на весь вьюпорт.
-         Это исключает «полосу» и расхождение оттенков снизу. */
-      html { background-color: var(--bg2-solid); }
+      /* Фон-градIENT фиксированным слоем, чтобы низ не «плыл» */
+      html { background: var(--bg2-solid); }
       html::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 68%, var(--bg2-solid) 100%);
-        /* без repeat и с фиксированием, чтобы не было дёрганий на мобильном скролле */
-        background-repeat: no-repeat;
+        content: ""; position: fixed; inset: 0; z-index: -1;
+        background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 70%, var(--bg2-solid) 100%);
       }
 
       body {
@@ -48,12 +38,8 @@
         color: var(--txt);
       }
 
-      /* Потоковая раскладка, никакой 100vh-акробатики */
-      .page {
-        max-width: var(--maxw);
-        margin: 32px auto;
-        padding: 0 16px;
-      }
+      .page { max-width: var(--maxw); margin: 24px auto; padding: 0 12px; }
+      @media (min-width: 768px) { .page { margin: 32px auto; padding: 0 16px; } }
 
       .card {
         background: var(--card);
@@ -64,39 +50,26 @@
       }
 
       .top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 16px;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 12px; margin-bottom: 16px;
       }
-
-      .back {
-        color: #2563eb;
-        text-decoration: none;
-        font-weight: 600;
-        white-space: nowrap;
-      }
+      .back { color:#2563eb; text-decoration:none; font-weight:600; white-space:nowrap; }
       .back:hover { text-decoration: underline; }
 
       h1 {
         margin: 0;
         font-family: Manrope, Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
         font-size: clamp(22px, 4vw, 30px);
-        text-align: center;
-        flex: 1;
+        text-align: center; flex: 1;
       }
 
-      .lead {
-        margin: 6px 0 20px;
-        color: var(--muted);
-        text-align: center;
-        font-size: 15px;
-      }
+      .lead { margin: 6px 0 20px; color: var(--muted); text-align:center; font-size: 15px; }
 
-      /* Контейнер и iframe виджета без ограничений по высоте/overflow */
+      /* Контейнер виджета: без overflow, даём странице скроллиться */
       .waitlist-box { width: 100%; }
       .waitlister-form { width: 100%; }
+
+      /* Силой переопределяем размеры вставленного iframe */
       .waitlister-form iframe {
         width: 100% !important;
         height: var(--wf-desktop) !important;
@@ -106,16 +79,14 @@
         background: transparent !important;
       }
 
-      @media (max-width: 480px) {
+      /* Портретный телефон: iframe выше, карточка уже */
+      @media (max-width: 480px), (orientation: portrait) and (max-width: 768px) {
+        :root { --maxw: 560px; --pad: 22px; }
         .waitlister-form iframe { height: var(--wf-mobile) !important; }
+        .page { margin: 16px auto; padding: 0 10px; }
       }
 
-      footer {
-        text-align: center;
-        font-size: 12px;
-        color: #374151;
-        margin-top: 16px;
-      }
+      footer { text-align:center; font-size:12px; color:#374151; margin-top:16px; }
     </style>
   </head>
   <body>
@@ -132,7 +103,7 @@
         <div class="waitlist-box">
           <div class="waitlister-form"
                data-waitlist-key="3YTiB9H5tk69"
-               data-height="840px"></div>
+               data-height="1200px"></div>
         </div>
 
         <footer>© <span id="y"></span> Echo</footer>
@@ -143,18 +114,21 @@
     <script>
       document.getElementById('y').textContent = new Date().getFullYear();
 
-      // Жёсткая страховка на случай, если их скрипт перезатирает стили iframe
-      (function enforceIframeHeight() {
+      // Страховка: если их скрипт перезапишет высоту, вернём свою.
+      (function enforceIframeHeight(){
         const root = getComputedStyle(document.documentElement);
-        const DESKTOP = root.getPropertyValue('--wf-desktop').trim() || '840px';
-        const MOBILE  = root.getPropertyValue('--wf-mobile').trim()  || '640px';
+        const DESKTOP = root.getPropertyValue('--wf-desktop').trim() || '900px';
+        const MOBILE  = root.getPropertyValue('--wf-mobile').trim()  || '1200px';
 
         const box = document.querySelector('.waitlister-form');
-        function targetHeight(){ return matchMedia('(max-width: 480px)').matches ? MOBILE : DESKTOP; }
+
+        function isMobile() {
+          return window.matchMedia('(max-width: 480px), (orientation: portrait) and (max-width: 768px)').matches;
+        }
         function apply(ifr){
           if (!ifr) return;
           ifr.style.width = '100%';
-          ifr.style.height = targetHeight();
+          ifr.style.height = isMobile() ? MOBILE : DESKTOP;
           ifr.style.maxHeight = 'none';
           ifr.style.border = '0';
           ifr.style.display = 'block';
