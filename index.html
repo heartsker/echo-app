@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UZD - Actually use the stuff you save</title>
+    <meta name="description" content="Save anything from TikTok and Instagram. UZD organizes, enriches, and makes your saved content searchable with AI. Stop hoarding, start doing." />
+    <meta name="author" content="UZD" />
+    <meta name="keywords" content="save content, TikTok, Instagram, AI organization, content management, productivity app" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="UZD - Actually use the stuff you save" />
+    <meta property="og:description" content="Save anything from TikTok and Instagram. UZD organizes, enriches, and makes your saved content searchable with AI." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@lovable_dev" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        background: #f9fafb;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 500px;
+        width: 100%;
+        padding: 24px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        text-align: center;
+      }
+      h1 {
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
+        color: #111827;
+      }
+      p {
+        color: #374151;
+        margin-bottom: 1.5rem;
+      }
+      .btn {
+        display: inline-block;
+        background: #2563eb;
+        color: white;
+        font-weight: 600;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s ease;
+      }
+      .btn:hover {
+        background: #1e40af;
+      }
+      .waitlist-wrapper {
+        display: none;
+        margin-top: 1.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Join the UZD Waitlist</h1>
+      <p>Be the first to try it when we launch.</p>
+      <button class="btn" id="showWaitlist">Join now</button>
+      <div class="waitlist-wrapper" id="waitlistWrapper">
+        <div class="waitlister-form" 
+             data-waitlist-key="3YTiB9H5tk69" 
+             data-height="453px"></div>
+      </div>
+    </div>
+
+    <script src="https://waitlister.me/js/embed.js" defer></script>
+    <script>
+      const btn = document.getElementById("showWaitlist");
+      const wrapper = document.getElementById("waitlistWrapper");
+
+      btn.addEventListener("click", () => {
+        wrapper.style.display = "block";
+        btn.style.display = "none";
+      });
+    </script>
+  </body>
+</html>
